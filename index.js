@@ -2,7 +2,11 @@ const dotenv = require("dotenv").config();
 const express = require("express");
 const app = express();
 const session = require("express-session");
+const passport = require("passport");
+const confegepassport = require("./config/passport");
 //*
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
     secret: process.env.session_secret,
@@ -10,9 +14,9 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 //*
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 //* routs
 const routs = require("./router/users");
 app.use(routs);

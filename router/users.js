@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const cotroller = require("../controller/users");
 const { body, validationResult } = require("express-validator");
-
-router.get("/", cotroller.home);
+const { authenticated } = require("../middlewares/auth");
+router.get("/", authenticated, cotroller.home);
 router.post(
   "/register",
   body("email").isEmail(),
@@ -11,5 +11,6 @@ router.post(
   cotroller.register
 );
 router.post("/login", cotroller.login);
+router.get("/login", cotroller.getlogin);
 
 module.exports = router;

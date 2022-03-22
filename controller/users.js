@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Users = require("../model/users");
+const passport = require("passport");
 const { validationResult } = require("express-validator");
 exports.home = (req, res) => {
   res.send("hi");
@@ -28,20 +29,14 @@ exports.register = async (req, res) => {
     console.log(e);
   }
 };
-exports.login = async (req, res) => {
-  const { username, password } = req.body;
-  const user = await Users.findOne({ username });
-  console.log(req.body);
-  if (user === null) {
-    return res.json("not exist");
-  }
-  const ismatch = await bcrypt.compareSync(password, user.password);
-  if (ismatch) {
-    const token = jwt.sign({ username: user.username }, process.env.JWT_secret);
-    res.json(token);
-  } else {
-    return res.send("Wrong username or Password");
-  }
+exports.login = async (req, res, next) => {
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  })(req, res, next);
+};
+exports.getlogin = (req, res) => {
+  res.send("hi login");
 };
 
 exports.logout = (req, res, next) => {
