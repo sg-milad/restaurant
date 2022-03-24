@@ -5,7 +5,7 @@ const Users = require("../model/users");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
 exports.home = (req, res) => {
-  res.send("hi");
+  res.send("hi home");
 };
 exports.register = async (req, res) => {
   try {
