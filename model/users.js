@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 var dateObj = new Date();
-var month = dateObj.getUTCMonth() + 1;
+var month = dateObj.getUTCMonth();
 var day = dateObj.getUTCDate();
 var year = dateObj.getUTCFullYear();
 const newdate = year + "/" + month + "/" + day;

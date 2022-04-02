@@ -5,8 +5,11 @@ const fileupload = require("express-fileupload");
 const session = require("express-session");
 const passport = require("passport");
 const confegepassport = require("./config/passport");
+const { notFound, errorHandler } = require("./middlewares/errorhandeling");
 const path = require("path");
 
+//* databas
+const mongoose = require("./config/database");
 //* json parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -19,16 +22,22 @@ app.use(
     saveUninitialized: true,
   })
 );
+//* static
+app.use(express.static(path.join(__dirname, "uploads")));
 //* init password
 app.use(passport.initialize());
 app.use(passport.session());
 //* routs
 const users = require("./router/users");
 const home = require("./router/home");
-app.use(express.static(path.join(__dirname, "uploads")));
-
+const order = require("./router/order");
 app.use(users);
 app.use(home);
-//* databas
-const mongoose = require("./config/database");
-app.listen(process.env.PORT, () => console.log("server is runing"));
+app.use(order);
+//*middlewares
+app.use(errorHandler);
+app.use(notFound);
+//
+app.listen(process.env.PORT, () =>
+  console.log(`server runing on port ${process.env.PORT}`)
+);

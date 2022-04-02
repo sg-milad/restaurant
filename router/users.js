@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const cotroller = require("../controller/users");
-const { body, validationResult } = require("express-validator");
-const { authenticated } = require("../middlewares/auth");
+const { body } = require("express-validator");
+const { Notauthenticated } = require("../middlewares/auth");
 router.post(
   "/register",
   body("email").isEmail(),
@@ -9,7 +9,8 @@ router.post(
   body("password").isLength({ min: 4 }),
   cotroller.register
 );
-router.post("/login", cotroller.login);
-router.get("/login", cotroller.getlogin);
+router.post("/login", Notauthenticated, cotroller.login);
+router.get("/logout", cotroller.logout);
+// router.get("/login", Notauthenticated, cotroller.getlogin);
 
 module.exports = router;

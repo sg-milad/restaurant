@@ -4,14 +4,11 @@ const jwt = require("jsonwebtoken");
 const Users = require("../model/users");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
-exports.home = (req, res) => {
-  res.send("hi home");
-};
 exports.register = async (req, res) => {
   try {
     const users = await Users.findOne({ username: req.body.username });
     if (users) {
-      return res.json("user exist");
+      return res.status(400).json("user already exists");
     }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -23,10 +20,13 @@ exports.register = async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hash,
-    }).then(res.status(201).json("create Success"));
+    });
+    res.status.json("create Success");
     console.log(user);
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    const error = new Error("error 500");
+    error.statuscode = 500;
+    throw error;
   }
 };
 exports.login = async (req, res, next) => {
@@ -35,11 +35,14 @@ exports.login = async (req, res, next) => {
     failureRedirect: "/login",
   })(req, res, next);
 };
-exports.getlogin = (req, res) => {
-  res.send("hi login");
-};
 
-exports.logout = (req, res, next) => {
-  req.session.user = null;
-  return res.json("logout");
+// exports.getlogin = (req, res) => {
+// res.send("hi login");
+// res.json({ username: req.user.username });
+// console.log(req.user);
+// };
+
+exports.logout = (req, res) => {
+  req.logout();
+  res.redirect("/");
 };
