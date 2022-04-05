@@ -1,51 +1,41 @@
 const Order = require("../model/order");
 
-exports.addOrderItems = async (req, res) => {
-  const {
-    orderItems,
-    shippingAddress,
-    paymentMethod,
-    shippingPrice,
-    totalPrice,
-    isPaid,
-  } = req.body;
+exports.addOrderItems = async (req, res, next) => {
+  const { orderItems } = req.body;
   if (orderItems.length == 0) {
     const error = new Error("no order items");
     error.statusCode = 400;
-    throw error;
+    next(error);
   } else {
     const order = await Order.create({
       user: req.user.id,
       orderItems,
-      shippingAddress,
-      paymentMethod,
-      shippingPrice,
-      isPaid,
-      totalPrice,
     });
     res.status(201).json(order);
     console.log(order);
   }
 };
-exports.getmyOrderItems = async (req, res) => {
+exports.getmyOrderItems = async (req, res, next) => {
   const order = await Order.find({ user: req.user._id });
-  const username = req.user.username;
+  const { username } = req.user;
   if (order.length == 0) {
     const error = new Error("you dont have order");
     error.statusCode = 400;
-    throw error;
+    next(error);
   } else {
-    res.json(order, username);
+    res.status(200).json(order);
+    console.log(order);
+    console.log(username);
   }
 };
 
-exports.getOrderById = async (req, res) => {
+exports.getOrderById = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (order) {
     res.json(order);
   } else {
     const error = new Error("not fond");
     error.statusCode = 404;
-    throw error;
+    next(error);
   }
 };

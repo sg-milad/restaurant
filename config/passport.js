@@ -7,20 +7,22 @@ passport.use(
     try {
       const user = await User.findOne({ username });
       if (!user) {
+        console.log("sss");
         return done(null, false, {
           message: "user not exist",
         });
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
-        return done(null, user); //req.user
+        return done(null, user, { message: "ok" }); //req.user
       } else {
         return done(null, false, {
           message: "username or password wrong",
         });
       }
     } catch (err) {
-      console.log(err);
+      const error = new Error("500");
+      error.satuscode = 500;
     }
   })
 );

@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
       email: req.body.email,
       password: hash,
     });
-    res.status.json("create Success");
+    res.status(201).json("create Success");
     console.log(user);
   } catch (err) {
     const error = new Error("error 500");
@@ -31,16 +31,16 @@ exports.register = async (req, res) => {
 };
 exports.login = async (req, res, next) => {
   passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
+    successRedirect: "/home",
+    failureRedirect: "/api/users/login",
   })(req, res, next);
 };
 
-// exports.getlogin = (req, res) => {
-// res.send("hi login");
-// res.json({ username: req.user.username });
-// console.log(req.user);
-// };
+exports.getlogin = (req, res) => {
+  res.send("hi login");
+  // res.json({ username: req.user.username });
+  console.log(req.user);
+};
 
 exports.logout = (req, res) => {
   req.logout();

@@ -31,12 +31,12 @@ app.use(passport.session());
 const users = require("./router/users");
 const home = require("./router/home");
 const order = require("./router/order");
-app.use(users);
-app.use(home);
-app.use(order);
+app.use("/home", home);
+app.use("/api/users", users);
+app.use("/api/orders", order);
 //*middlewares
-app.use(errorHandler);
 app.use(notFound);
+app.use(errorHandler);
 //
 app.listen(process.env.PORT, () =>
   console.log(`server runing on port ${process.env.PORT}`)

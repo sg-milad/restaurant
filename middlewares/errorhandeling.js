@@ -1,6 +1,6 @@
 exports.notFound = (req, res, next) => {
   const error = new Error("Not Found ");
-  res.status(404);
+  error.statusCode = 404;
   next(error);
 };
 exports.errorHandler = (error, req, res, next) => {
