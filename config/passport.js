@@ -23,6 +23,7 @@ passport.use(
     } catch (err) {
       const error = new Error("500");
       error.satuscode = 500;
+      console.log(err);
     }
   })
 );

@@ -10,7 +10,7 @@ const path = require("path");
 
 //* databas
 const mongoose = require("./config/database");
-//* json parser
+//* body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(fileupload());
@@ -27,14 +27,15 @@ app.use(express.static(path.join(__dirname, "uploads")));
 //* init password
 app.use(passport.initialize());
 app.use(passport.session());
-//* routs
+//*middlewares
+const product = require("./router/product");
 const users = require("./router/users");
 const home = require("./router/home");
 const order = require("./router/order");
-app.use("/home", home);
+app.use(home);
 app.use("/api/users", users);
 app.use("/api/orders", order);
-//*middlewares
+app.use("/api/product", product);
 app.use(notFound);
 app.use(errorHandler);
 //

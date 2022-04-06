@@ -15,6 +15,10 @@ const userschema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   createdAT: { type: String, default: newdate },
-  // id: { default: mongoose.ObjectId() },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 module.exports = mongoose.model("users", userschema);

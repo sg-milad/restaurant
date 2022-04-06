@@ -1,6 +1,5 @@
-const post = require("../model/posts");
+const product = require("../model/products");
 exports.home = async (req, res) => {
-  const allpost = await post.find({});
-  // console.log(allpost);
+  const allpost = await product.find({});
   res.json(allpost);
 };

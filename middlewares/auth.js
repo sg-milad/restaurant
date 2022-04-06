@@ -4,9 +4,12 @@ exports.authenticated = (req, res, next) => {
   }
   res.redirect("/api/users/login");
 };
-// exports.Notauthenticated = (req, res, next) => {
-//   if (!req.isAuthenticated()) {
-//     res.redirect("/api/users/login");
-//   }
-//   return next();
-// };
+
+exports.admin = (req, res, next) => {
+  if (req.user.isAdmin) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error("Not authorized as an admin");
+  }
+};

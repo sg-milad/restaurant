@@ -31,18 +31,17 @@ exports.register = async (req, res) => {
 };
 exports.login = async (req, res, next) => {
   passport.authenticate("local", {
-    successRedirect: "/home",
+    successRedirect: "/",
     failureRedirect: "/api/users/login",
   })(req, res, next);
 };
 
 exports.getlogin = (req, res) => {
   res.send("hi login");
-  // res.json({ username: req.user.username });
-  console.log(req.user);
 };
 
-exports.logout = (req, res) => {
+exports.logout = (req, res, next) => {
+  req.session = null;
   req.logout();
   res.redirect("/");
 };
