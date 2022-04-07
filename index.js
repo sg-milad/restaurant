@@ -2,7 +2,9 @@ const dotenv = require("dotenv").config();
 const express = require("express");
 const app = express();
 const fileupload = require("express-fileupload");
+const helmet = require("helmet");
 const session = require("express-session");
+const rateLimit = require("express-rate-limit");
 const passport = require("passport");
 const confegepassport = require("./config/passport");
 const { notFound, errorHandler } = require("./middlewares/errorhandeling");
@@ -22,12 +24,21 @@ app.use(
     saveUninitialized: true,
   })
 );
+//* limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 //* static
 app.use(express.static(path.join(__dirname, "uploads")));
 //* init password
 app.use(passport.initialize());
 app.use(passport.session());
 //*middlewares
+app.use(helmet());
+app.use(limiter);
 const product = require("./router/product");
 const users = require("./router/users");
 const home = require("./router/home");
