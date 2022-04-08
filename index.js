@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const fileupload = require("express-fileupload");
 const helmet = require("helmet");
+const morgan = require("morgan");
 const session = require("express-session");
 const rateLimit = require("express-rate-limit");
 const passport = require("passport");
@@ -39,6 +40,7 @@ app.use(passport.session());
 //*middlewares
 app.use(helmet());
 app.use(limiter);
+app.use(morgan("dev"));
 const product = require("./router/product");
 const users = require("./router/users");
 const home = require("./router/home");

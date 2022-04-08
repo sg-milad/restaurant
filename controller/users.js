@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Users = require("../model/users");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
@@ -30,10 +28,7 @@ exports.register = async (req, res) => {
   }
 };
 exports.login = async (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/api/users/login",
-  })(req, res, next);
+  passport.authenticate("local")(req, res, next);
 };
 
 exports.getlogin = (req, res) => {
@@ -43,5 +38,4 @@ exports.getlogin = (req, res) => {
 exports.logout = (req, res, next) => {
   req.session = null;
   req.logout();
-  res.redirect("/");
 };

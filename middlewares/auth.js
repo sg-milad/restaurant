@@ -2,7 +2,7 @@ exports.authenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect("/api/users/login");
+  res.json("you dont have Authenticat");
 };
 
 exports.admin = (req, res, next) => {
