@@ -1,5 +1,6 @@
 const appRoot = require("app-root-path");
 const Product = require("../model/products");
+
 exports.addproduct = (req, res) => {
   const foodimg = req.files.img;
   const filename = `${foodimg.name}`;
