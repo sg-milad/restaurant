@@ -9,7 +9,6 @@ const rateLimit = require("express-rate-limit");
 const passport = require("passport");
 const confegepassport = require("./config/passport");
 const { notFound, errorHandler } = require("./middlewares/errorhandeling");
-const path = require("path");
 
 //* databas
 const mongoose = require("./config/database");
@@ -33,7 +32,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 //* static
-app.use(express.static(path.join(__dirname, "uploads")));
+app.use("/api/product/all", express.static("uploads"));
 //* init password
 app.use(passport.initialize());
 app.use(passport.session());
@@ -43,9 +42,7 @@ app.use(limiter);
 app.use(morgan("dev"));
 const product = require("./router/product");
 const users = require("./router/users");
-const home = require("./router/home");
 const order = require("./router/order");
-app.use(home);
 app.use("/api/users", users);
 app.use("/api/orders", order);
 app.use("/api/product", product);

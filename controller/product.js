@@ -36,3 +36,7 @@ exports.deleteProduct = async (req, res, next) => {
     next(error);
   }
 };
+exports.getallproduct = async (req, res) => {
+  const allpost = await Product.find({});
+  res.json(allpost);
+};

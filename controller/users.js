@@ -1,8 +1,8 @@
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const Users = require("../model/users");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
   try {
     const users = await Users.findOne({ username: req.body.username });
     if (users) {
@@ -12,19 +12,18 @@ exports.register = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
     const user = await Users.create({
       username: req.body.username,
       email: req.body.email,
-      password: hash,
+      password: req.body.password,
     });
     res.status(201).json("create Success");
     console.log(user);
   } catch (err) {
-    const error = new Error("error 500");
+    console.log(err);
+    const error = new Error(500);
     error.statuscode = 500;
-    throw error;
+    next(error);
   }
 };
 exports.login = async (req, res, next) => {
